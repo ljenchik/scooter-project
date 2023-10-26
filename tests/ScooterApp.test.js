@@ -3,15 +3,13 @@ const User = require("../src/User");
 const ScooterApp = require("../src/ScooterApp");
 
 let scooterApp;
-
 beforeEach(() => {
     scooterApp = new ScooterApp();
 });
-
 // ScooterApp tests here
 describe("ScooterApp properties tests", () => {
     test("correct stations", () => {
-        expect(ScooterApp.stations).toEqual({
+        expect(scooterApp.stations).toEqual({
             station1: [],
             station2: [],
             station3: [],
@@ -92,6 +90,70 @@ describe("registerUser method tests", () => {
     });
 
     // rent scooter
+    test("rentScooter method", () => {
+        const user = scooterApp.registerUser("Jane", "test123", 34);
+        scooterApp.loginUser(user.username, user.getPassword());
+        expect(scooterApp.stations).toEqual({
+            station1: [],
+            station2: [],
+            station3: [],
+        });
+        const scooter = scooterApp.createScooter("station2");
+        const scooter1 = scooterApp.createScooter("station2");
+        expect(scooterApp.stations).toEqual({
+            station1: [],
+            station2: [
+                {
+                    charge: 100,
+                    isBroken: false,
+                    serial: 2,
+                    station: "station2",
+                    user: null,
+                },
+                {
+                    charge: 100,
+                    isBroken: false,
+                    serial: 3,
+                    station: "station2",
+                    user: null,
+                },
+            ],
+            station3: [],
+        });
+        scooterApp.rentScooter(scooter, user);
+        expect(scooter.user).toEqual(user);
+        expect(scooterApp.stations).toEqual({
+            station1: [],
+            station2: [
+                {
+                    charge: 100,
+                    isBroken: false,
+                    serial: 3,
+                    station: "station2",
+                    user: null,
+                },
+            ],
+            station3: [],
+        });
+    });
 
     // dock scooter
+    test("dockScooter method", () => {
+        const newScooter = new Scooter("station1");
+        scooterApp.dockScooter(newScooter, "station3");
+        expect(newScooter.station).toBe("station3");
+        expect(scooterApp.stations).toEqual({
+            station1: [],
+            station2: [],
+            station3: [
+                {
+                    charge: 100,
+                    isBroken: false,
+                    serial: 4,
+                    station: "station3",
+                    user: null,
+                },
+            ],
+        });
+    });
 });

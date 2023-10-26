@@ -2,7 +2,7 @@ const User = require("./User");
 const Scooter = require("./Scooter");
 
 class ScooterApp {
-    static stations = { station1: [], station2: [], station3: [] };
+    stations = { station1: [], station2: [], station3: [] };
     constructor() {
         this.registeredUsers = {};
     }
@@ -37,6 +37,40 @@ class ScooterApp {
         } else {
             throw new Error("No such user is logged in");
         }
+    }
+    createScooter(station) {
+        if (this.stations.hasOwnProperty(station)) {
+            const newScooter = new Scooter(station);
+            this.stations[station].push(newScooter);
+            return newScooter;
+        } else {
+            throw new Error("No such station error");
+        }
+    }
+
+    rentScooter(scooter, user) {
+        this.stations[scooter.station] = this.stations[scooter.station].filter(
+            (item) => item.serial !== scooter.serial
+        );
+        scooter.rent(user);
+    }
+
+    dockScooter(scooter, station) {
+        if (!this.stations.hasOwnProperty(station)) {
+            throw new Error("No such station");
+        } else if (scooter.station === station) {
+            throw new Error("Scooter already at station");
+        } else {
+            scooter.dock(station);
+            this.stations[station].push(scooter);
+            console.log("Scooter is docked");
+        }
+    }
+
+    print() {
+        console.log("Registered users: ", this.registeredUsers);
+        console.log("List of all stations: ");
+        console.log(this.stations);
     }
 }
 

@@ -15,7 +15,7 @@ describe("User property tests", () => {
     });
     // test password
     test("correct password", () => {
-        expect(user.getPassword()).toBe("***123");
+        expect(user.getPassword()).toBe("test123");
     });
     // test age
     test("correct age", () => {

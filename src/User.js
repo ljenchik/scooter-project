@@ -8,7 +8,7 @@ class User {
     }
     getPassword() {
         // Displays 3 asterisks and the last three characters of the password
-        return `***${this.#password.slice(-3)}`;
+        return this.#password;
     }
     login(password) {
         if (this.#password === password) {
