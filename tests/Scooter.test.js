@@ -27,7 +27,7 @@ describe("scooter object", () => {
 });
 
 //Method tests
-describe("scooter methods", () => {
+describe("Scooter methods", () => {
     const scooter = new Scooter("Limehouse");
     const scooter1 = new Scooter("Bank");
     const scooter2 = new Scooter("TowerBridge");

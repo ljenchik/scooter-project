@@ -1,4 +1,3 @@
-const User = require("./User");
 class Scooter {
     static nextSertial = 1;
     constructor(station) {
