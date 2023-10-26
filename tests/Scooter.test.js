@@ -34,7 +34,8 @@ describe("scooter methods", () => {
     const user = new User();
     //rent method
     test("rent method to checkout to user", () => {
-        expect(scooter.rent(user)).toBe("Ready to check out");
+        scooter.rent(user);
+        expect(scooter.user).toEqual(user);
     });
     test("rent method to throw error when charge is less than 20", () => {
         scooter1.charge = 15;
@@ -56,6 +57,16 @@ describe("scooter methods", () => {
     });
 
     //dock method
+    test("dock method to clear out the user", () => {
+        scooter.dock("Upminster");
+        expect(scooter.user).toBe(null);
+    });
+
+    test("dock method updates the station when scooter is docked", () => {
+        scooter.dock("Upminster");
+        expect(scooter.station).toBe("Upminster");
+    });
+
     //requestRepair method
     //charge method
 });

@@ -11,10 +11,14 @@ class Scooter {
     }
     rent(user) {
         if (this.charge > 20 && !this.isBroken) {
-            return "Ready to check out";
+            this.user = user;
         } else {
             throw new Error("Scooter needs to charge or scooter needs repair");
         }
+    }
+    dock(station) {
+        this.user = null;
+        this.station = station;
     }
 }
 
