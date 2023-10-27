@@ -63,6 +63,18 @@ describe("registerUser method tests", () => {
         scooterApp.loginUser("Jane", "test123");
         expect(scooterApp.registeredUsers["Jane"].loggedIn).toBe(true);
     });
+
+    test("Should not login if not registered", () => {
+        expect(() => scooterApp.loginUser("Jane", "test123")).toThrow(
+            "Username or password is incorrect"
+        );
+    });
+    test("Should not login with incorrect password", () => {
+        scooterApp.registerUser("Kate", "4321", 23);
+        expect(() => scooterApp.loginUser("Kate", "test123")).toThrow(
+            "Incorrect password"
+        );
+    });
     // log out
     test("Should logout correctly", () => {
         scooterApp.registerUser("Jane", "test123", 34);
@@ -89,6 +101,12 @@ describe("registerUser method tests", () => {
         });
     });
 
+    test("Should not logout if not logged in", () => {
+        expect(() => scooterApp.logoutUser("Jane")).toThrow(
+            "No such user is logged in"
+        );
+    });
+
     // rent scooter
     test("rentScooter method", () => {
         const user = scooterApp.registerUser("Jane", "test123", 34);
@@ -99,7 +117,7 @@ describe("registerUser method tests", () => {
             station3: [],
         });
         const scooter = scooterApp.createScooter("station2");
-        const scooter1 = scooterApp.createScooter("station2");
+        scooterApp.createScooter("station2");
         expect(scooterApp.stations).toEqual({
             station1: [],
             station2: [
@@ -154,6 +172,24 @@ describe("registerUser method tests", () => {
                     user: null,
                 },
             ],
+        });
+    });
+
+    // create scooter
+    test("creates a scooter", () => {
+        const scooter1 = scooterApp.createScooter("station1");
+        expect(scooterApp.stations).toEqual({
+            station1: [
+                {
+                    charge: 100,
+                    isBroken: false,
+                    serial: 5,
+                    station: "station1",
+                    user: null,
+                },
+            ],
+            station2: [],
+            station3: [],
         });
     });
 });
