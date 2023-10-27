@@ -7,7 +7,6 @@ class User {
         this.loggedIn = false;
     }
     getPassword() {
-        // Displays 3 asterisks and the last three characters of the password
         return this.#password;
     }
     login(password) {
@@ -22,5 +21,5 @@ class User {
     }
 }
 
-// Verification on username and password (length)
+// To do: verification on username and password (length)
 module.exports = User;
