@@ -75,3 +75,6 @@ class ScooterApp {
 }
 
 module.exports = ScooterApp;
+
+const scooterApp = new ScooterApp();
+scooterApp.print();

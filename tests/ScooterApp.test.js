@@ -175,15 +175,29 @@ describe("registerUser method tests", () => {
         });
     });
 
+    test("dockScooter method with wrong station", () => {
+        const newScooter = new Scooter("station3");
+        expect(() => scooterApp.dockScooter(newScooter, "station4")).toThrow(
+            "No such station"
+        );
+    });
+
+    test("dockScooter method with wrong station", () => {
+        const newScooter = new Scooter("station3");
+        expect(() => scooterApp.dockScooter(newScooter, "station3")).toThrow(
+            "Scooter already at station"
+        );
+    });
+
     // create scooter
     test("creates a scooter", () => {
-        const scooter1 = scooterApp.createScooter("station1");
+        scooterApp.createScooter("station1");
         expect(scooterApp.stations).toEqual({
             station1: [
                 {
                     charge: 100,
                     isBroken: false,
-                    serial: 5,
+                    serial: 7,
                     station: "station1",
                     user: null,
                 },
@@ -191,5 +205,10 @@ describe("registerUser method tests", () => {
             station2: [],
             station3: [],
         });
+    });
+    test("creates a scooter with incorrect station", () => {
+        expect(() => scooterApp.createScooter("station4")).toThrow(
+            "No such station error"
+        );
     });
 });
