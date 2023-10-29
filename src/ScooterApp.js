@@ -67,14 +67,11 @@ class ScooterApp {
         }
     }
 
-    print() {
-        console.log("Registered users: ", this.registeredUsers);
-        console.log("List of all stations: ");
-        console.log(this.stations);
-    }
+    // print() {
+    //     console.log("Registered users: ", this.registeredUsers);
+    //     console.log("List of all stations: ");
+    //     console.log(this.stations);
+    // }
 }
 
 module.exports = ScooterApp;
-
-const scooterApp = new ScooterApp();
-scooterApp.print();

@@ -50,6 +50,9 @@ describe("registerUser method tests", () => {
             "Too young to register"
         );
     });
+});
+
+describe("login user method tests", () => {
     // log in
     test("Should login and user.loggedIn = true", () => {
         scooterApp.registerUser("Jane", "test123", 34);
@@ -75,7 +78,10 @@ describe("registerUser method tests", () => {
             "Incorrect password"
         );
     });
-    // log out
+});
+
+// log out
+describe("logout user method tests", () => {
     test("Should logout correctly", () => {
         scooterApp.registerUser("Jane", "test123", 34);
         scooterApp.registerUser("Kate", "4321", 23);
@@ -106,8 +112,58 @@ describe("registerUser method tests", () => {
             "No such user is logged in"
         );
     });
+});
 
-    // rent scooter
+// create scooter
+describe("create scooter method tests", () => {
+    test("creates a scooter and adds it to the given station", () => {
+        const scooterApp = new ScooterApp();
+        expect(scooterApp.stations).toEqual({
+            station1: [],
+            station2: [],
+            station3: [],
+        });
+        const s1 = scooterApp.createScooter("station1");
+        expect(scooterApp.stations).toEqual({
+            station1: [s1],
+            station2: [],
+            station3: [],
+        });
+        expect(s1).toEqual(
+            expect.objectContaining({
+                charge: 100,
+                isBroken: false,
+                station: "station1",
+                user: null,
+            })
+        );
+    });
+
+    test("creates a second scooter and adds it to the given station", () => {
+        const scooterApp1 = new ScooterApp();
+        expect(scooterApp1.stations).toEqual({
+            station1: [],
+            station2: [],
+            station3: [],
+        });
+        const scooter1 = scooterApp1.createScooter("station1");
+        const scooter2 = scooterApp1.createScooter("station1");
+        expect(scooterApp1.stations).toEqual({
+            station1: [scooter1, scooter2],
+            station2: [],
+            station3: [],
+        });
+        expect(scooter1.serial !== scooter2.serial).toBe(true);
+    });
+    test("creates a scooter with incorrect station", () => {
+        expect(() => scooterApp.createScooter("station4")).toThrow(
+            "No such station error"
+        );
+    });
+});
+
+// rent scooter
+describe("rent scooter user method tests", () => {
     test("rentScooter method", () => {
         const user = scooterApp.registerUser("Jane", "test123", 34);
         scooterApp.loginUser(user.username, user.getPassword());
@@ -116,46 +172,25 @@ describe("registerUser method tests", () => {
             station2: [],
             station3: [],
         });
-        const scooter = scooterApp.createScooter("station2");
-        scooterApp.createScooter("station2");
+        const s1 = scooterApp.createScooter("station2");
+        const s2 = scooterApp.createScooter("station2");
         expect(scooterApp.stations).toEqual({
             station1: [],
-            station2: [
-                {
-                    charge: 100,
-                    isBroken: false,
-                    serial: 2,
-                    station: "station2",
-                    user: null,
-                },
-                {
-                    charge: 100,
-                    isBroken: false,
-                    serial: 3,
-                    station: "station2",
-                    user: null,
-                },
-            ],
+            station2: [s1, s2],
             station3: [],
         });
-        scooterApp.rentScooter(scooter, user);
-        expect(scooter.user).toEqual(user);
+        scooterApp.rentScooter(s1, user);
+        expect(s1.user).toEqual(user);
         expect(scooterApp.stations).toEqual({
             station1: [],
-            station2: [
-                {
-                    charge: 100,
-                    isBroken: false,
-                    serial: 3,
-                    station: "station2",
-                    user: null,
-                },
-            ],
+            station2: [s2],
             station3: [],
         });
     });
+});
 
-    // dock scooter
+// dock scooter
+describe("dock scooter method tests", () => {
     test("dockScooter method", () => {
         const newScooter = new Scooter("station1");
         scooterApp.dockScooter(newScooter, "station3");
@@ -163,15 +198,7 @@ describe("registerUser method tests", () => {
         expect(scooterApp.stations).toEqual({
             station1: [],
             station2: [],
-            station3: [
-                {
-                    charge: 100,
-                    isBroken: false,
-                    serial: 4,
-                    station: "station3",
-                    user: null,
-                },
-            ],
+            station3: [newScooter],
         });
     });
 
@@ -186,29 +213,6 @@ describe("registerUser method tests", () => {
         const newScooter = new Scooter("station3");
         expect(() => scooterApp.dockScooter(newScooter, "station3")).toThrow(
             "Scooter already at station"
-        );
-    });
-
-    // create scooter
-    test("creates a scooter", () => {
-        scooterApp.createScooter("station1");
-        expect(scooterApp.stations).toEqual({
-            station1: [
-                {
-                    charge: 100,
-                    isBroken: false,
-                    serial: 7,
-                    station: "station1",
-                    user: null,
-                },
-            ],
-            station2: [],
-            station3: [],
-        });
-    });
-    test("creates a scooter with incorrect station", () => {
-        expect(() => scooterApp.createScooter("station4")).toThrow(
-            "No such station error"
         );
     });
 });
