@@ -38,9 +38,10 @@ describe("registerUser method tests", () => {
             Kate: new User("Kate", "test123", 23),
         });
     });
-
     test("Should throw error when user already registered", () => {
-        scooterApp.registeredUsers = { Jane: ["test123", 34] };
+        scooterApp.registerUser("Jane", "test123", 34);
+        scooterApp.registerUser("Kate", "test123", 23);
+        expect(Object.keys(scooterApp.registeredUsers).length).toBe(2);
         expect(() => scooterApp.registerUser("Jane", "test123", 34)).toThrow(
             "Already registered"
         );
