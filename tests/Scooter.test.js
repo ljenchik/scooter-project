@@ -2,7 +2,7 @@ const Scooter = require("../src/Scooter");
 const User = require("../src/User");
 
 //typeof scooter === object
-describe("scooter object", () => {
+describe("Scooter object", () => {
     const scooter = new Scooter("Limehouse");
     const scooter1 = new Scooter("Bank");
     test("Scooter class should create Scooter instance", () => {
@@ -28,42 +28,52 @@ describe("scooter object", () => {
 
 //Method tests
 describe("Scooter methods", () => {
-    const scooter = new Scooter("Limehouse");
-    const scooter1 = new Scooter("Bank");
-    const scooter2 = new Scooter("TowerBridge");
-    const user = new User();
     //rent method
-    test("rent method to checkout to user", () => {
+    test("rent method to checkout to user, success", () => {
+        const scooter = new Scooter("Limehouse");
+        const user = new User("Ben", "1234", 23);
         scooter.rent(user);
         expect(scooter.user).toEqual(user);
+        expect(scooter.station).toBeNull();
     });
     test("rent method to throw error when charge is less than 20", () => {
-        scooter1.charge = 15;
-        expect(() => scooter1.rent(user)).toThrow(
+        const scooter = new Scooter("Limehouse");
+        const user = new User("Ben", "1234", 23);
+        scooter.charge = 15;
+        expect(() => scooter.rent(user)).toThrow(
             "Scooter needs to charge or scooter needs repair"
         );
+        expect(scooter.user).toBeNull();
+        expect(scooter.station).toBe("Limehouse");
     });
     test("rent method to throw error when scooter is broken", () => {
-        scooter2.isBroken = true;
-        expect(() => scooter2.rent(user)).toThrow(
+        const scooter = new Scooter("Limehouse");
+        const user = new User("Ben", "1234", 23);
+        scooter.isBroken = true;
+        expect(() => scooter.rent(user)).toThrow(
             "Scooter needs to charge or scooter needs repair"
         );
+        expect(scooter.user).toBeNull();
+        expect(scooter.station).toBe("Limehouse");
     });
     test("rent method to throw error when charge is low and scooter is broken", () => {
-        scooter2.charge = 19;
-        expect(() => scooter2.rent(user)).toThrow(
+        const scooter = new Scooter("Limehouse");
+        const user = new User("Ben", "1234", 23);
+        scooter.isBroken = true;
+        expect(() => scooter.rent(user)).toThrow(
             "Scooter needs to charge or scooter needs repair"
         );
+        expect(scooter.user).toBeNull();
+        expect(scooter.station).toBe("Limehouse");
     });
 
     //dock method
     test("dock method to clear out the user", () => {
+        const scooter = new Scooter("Limehouse");
+        const user = new User("Ben", "1234", 23);
+        scooter.rent(user);
         scooter.dock("Upminster");
         expect(scooter.user).toBe(null);
-    });
-
-    test("dock method updates the station when scooter is docked", () => {
-        scooter.dock("Upminster");
         expect(scooter.station).toBe("Upminster");
     });
 
